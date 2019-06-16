@@ -7,7 +7,11 @@ randomInteger = (min, max) => { //функция получения случай
 }
 
 class Level { //главный класс игры - уорвень. С помощью него создаются новые уровни с помощью описания их настроек в аргументе "levelSettings"
-  constructor(levelSettings) {
+  constructor(levelSettings, makeNewLevelCallBack) {
+
+    this._makeNewLevelCallBack = makeNewLevelCallBack;
+
+
     this._time = levelSettings.time; //время всего уровня - до вылета главного большого противника
 
     this._enemyFrequencyOccurrence = levelSettings.enemyFrequencyOccurrence; //частота появления противников 
@@ -15,6 +19,7 @@ class Level { //главный класс игры - уорвень. С помо
 
     this._enemyShipHealth = levelSettings.enemyShipHealth; //значение "здоровья" противников 
     this._enemySpeed = levelSettings.enemySpeed; //значение скорости противников 
+    this._enemyScroreWeight = this._enemyShipHealth; //значение "цены" очков за уничтожение противника
 
     this._enemyBulletDamage = levelSettings.enemyBulletDamage; //значение урона пули противников
     this._enemyBulletSpeed = levelSettings.enemyBulletSpeed;  //значение скорости пули противников
@@ -24,6 +29,7 @@ class Level { //главный класс игры - уорвень. С помо
 
     this._bigEnemyyFrequencyShooting = levelSettings.bigEnemyyFrequencyShooting;
     this._bigEnemyShipHealth = levelSettings.bigEnemyShipHealth;
+    this._bigEnemyScroreWeight = this._bigEnemyShipHealth;
 
     this._bigEnemyBackGroundURL = levelSettings.bigEnemyBackGroundURL;
     this._bigEnemySpeed = levelSettings.bigEnemySpeed;
@@ -36,8 +42,7 @@ class Level { //главный класс игры - уорвень. С помо
     }, this._enemyFrequencyOccurrence);
 
     setTimeout(() => {//ограничение времени появления противников
-      clearInterval(enemiesTime);
-      
+      clearInterval(enemiesTime);      
     }, this._time);
     setTimeout(this._makeBigEnemyShip.bind(this),this._time + 5000);
   }
@@ -54,8 +59,10 @@ class Level { //главный класс игры - уорвень. С помо
     let enemyShip = {};
     enemyShip.element = document.createElement('div');
     enemyShip.element.classList.add("enemyShip");
-    enemyShip.element.style.left = randomInteger(0, document.body.clientWidth) + 'px';
+    enemyShip.element.style.backgroundImage = `url(${this._enemyBackGroundURL})`;
+    enemyShip.element.style.left = randomInteger(0, mainWindow.clientWidth) + 'px';
     enemyShip.element.setAttribute("enemyHealth", this._enemyShipHealth);
+    enemyShip.element.setAttribute("enemyScroreWeight", this._enemyScroreWeight);
     mainWindow.appendChild(enemyShip.element);
     this._enemyMoving(enemyShip);
 
@@ -93,6 +100,8 @@ class Level { //главный класс игры - уорвень. С помо
       {
         playerShip.element.setAttribute('health', playerShip.element.getAttribute('health') - enemy.element.getAttribute("enemyHealth")); // нанесение урона кораблю игрока при столкновении
         playerShip.element.firstChild.setAttribute("value", playerShip.element.getAttribute("health"));
+        let currentScore = +Score.innerHTML;
+        Score.innerHTML = currentScore + +enemy.element.getAttribute("enemyScroreWeight");
         enemy.element.setAttribute("removed", true); // уничтожение корабля противника при столкновении
         enemy.element.remove();
         
@@ -114,7 +123,9 @@ class Level { //главный класс игры - уорвень. С помо
     let bigEnemyShip = {};
     bigEnemyShip.element = document.createElement('div');
     bigEnemyShip.element.classList.add("bigEnemyShip");
+    bigEnemyShip.element.style.backgroundImage = `url(${this._bigEnemyBackGroundURL})`;
     bigEnemyShip.element.setAttribute("enemyHealth", this._bigEnemyShipHealth);
+    bigEnemyShip.element.setAttribute("enemyScroreWeight", this._bigEnemyShipHealth);
     mainWindow.appendChild(bigEnemyShip.element);
 
     let enemyShipHealthLine = document.createElement('progress');
@@ -132,6 +143,7 @@ class Level { //главный класс игры - уорвень. С помо
     let _enemiesShootingTime = setInterval(() => { //постоянная сттрельба противников 
       if (bigEnemyShip.element.getAttribute("removed")) { 
         clearInterval(_enemiesShootingTime);
+        this._makeNewLevelCallBack();
         return;
       }
       bigEnemyShootimg();
@@ -155,9 +167,9 @@ class Level { //главный класс игры - уорвень. С помо
       let moveRight = ()=> {
         let bigEnemyCoordsLeft = bigEnemyShip.element.getBoundingClientRect().left;
     
-        if (bigEnemyCoordsLeft > 1800){
+        if (bigEnemyCoordsLeft > mainWindow.clientWidth){
           clearInterval(right);
-          left = setInterval(function () {
+          left = setInterval(()=> {
             moveLeft();
           }, 17);
           return;
@@ -169,7 +181,7 @@ class Level { //главный класс игры - уорвень. С помо
       let moveLeft = ()=> {
         let bigEnemyCoordsLeft = bigEnemyShip.element.getBoundingClientRect().left;
     
-        if (bigEnemyCoordsLeft < -100){
+        if (bigEnemyCoordsLeft < -200){
           clearInterval(left);
           right = setInterval(()=> {
             moveRight()

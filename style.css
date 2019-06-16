@@ -61,7 +61,6 @@ body{
 .enemyShip{
   width: 100px;
   height: 180px;
-  background-image: url('images/enemy.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -79,7 +78,6 @@ body{
 .bigEnemyShip{
   width: 220px;
   height: 600px;
-  background-image: url('images/Enemy-removebg.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

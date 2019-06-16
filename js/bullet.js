@@ -1,3 +1,5 @@
+let Score = document.getElementById('info').children[1];
+
 class Bullet{
   constructor(ship) {
     this.parentShip = ship;
@@ -37,17 +39,19 @@ class Bullet{
       let bulletCords = this.bulletElement.getBoundingClientRect();
       let enemies = document.getElementsByClassName(myEnemyClass);     
 
-      if (myEnemyClass == "enemyShip" || myEnemyClass == "bigEnemyShip") {
-        for (let i = 0; i < enemies.length; i++) {    
+      if (myEnemyClass == "enemyShip" || myEnemyClass == "bigEnemyShip") {        
+        for (let i = 0; i < enemies.length; i++) {  
+          
           if (enemies[i].getBoundingClientRect().bottom >= bulletCords.top && 
             enemies[i].getBoundingClientRect().left <= bulletCords.left && 
             enemies[i].getBoundingClientRect().right >= bulletCords.right)
           { 
 						enemies[i].setAttribute("enemyHealth", enemies[i].getAttribute("enemyHealth") - playerShip.bulletDamage);
 						enemies[i].firstChild.setAttribute("value", enemies[i].getAttribute("enemyHealth"));
-						debugger;
             if(enemies[i].getAttribute("enemyHealth") <= 0){
               enemies[i].setAttribute("removed", true);
+              let currentScore = +Score.innerHTML;
+              Score.innerHTML = currentScore + +enemies[i].getAttribute("enemyScroreWeight");
               enemies[i].remove();
             }
             this.bulletElement.remove();
@@ -67,7 +71,9 @@ class Bullet{
             enemies[i].firstChild.setAttribute("value", enemies[i].getAttribute("health"));
             if(enemies[i].getAttribute("health") <= 0){
               enemies[i].setAttribute("removed", true);
+              confirm('Начать заново(OK) или закрыть окно с игрой(Cancel/Отменна)?') ? window.location.reload() : window.close();
               enemies[i].remove();
+              return;              
             }
             if(this.parentShip.removed) clearInterval(bulletMoveTime);    
             this.bulletElement.remove();

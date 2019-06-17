@@ -60,7 +60,7 @@ class Level { //главный класс игры - уорвень. С помо
     enemyShip.element = document.createElement('div');
     enemyShip.element.classList.add("enemyShip");
     enemyShip.element.style.backgroundImage = `url(${this._enemyBackGroundURL})`;
-    enemyShip.element.style.left = randomInteger(0, mainWindow.clientWidth) + 'px';
+    enemyShip.element.style.left = randomInteger(0, mainWindow.clientWidth - 100) + 'px';
     enemyShip.element.setAttribute("enemyHealth", this._enemyShipHealth);
     enemyShip.element.setAttribute("enemyScroreWeight", this._enemyScroreWeight);
     mainWindow.appendChild(enemyShip.element);

@@ -40,7 +40,7 @@ let level2 = { //создание уровня. Настройки переда�
   enemyBulletDamage: 50,
   enemySpeed: 2,
   enemyBulletSpeed: -10,
-  enemyBackGroundURL: "./images/MainShip.png",
+  enemyBackGroundURL: "./images/enemy2.png",
 
   bigEnemyyFrequencyShooting: 1000,
   bigEnemyShipHealth: 1000,
@@ -58,11 +58,11 @@ let level3 = { //создание уровня. Настройки переда�
   enemyBulletDamage: 50,
   enemySpeed: 2,
   enemyBulletSpeed: -10,
-  enemyBackGroundURL: "./images/Enemy-removebg.png",
+  enemyBackGroundURL: "./images/enemy3.png",
 
   bigEnemyyFrequencyShooting: 1000,
   bigEnemyShipHealth: 1000,
-  bigEnemyBackGroundURL: "./images/Enemy-removebg.png",
+  bigEnemyBackGroundURL: "./images/enemy4.png",
   bigEnemySpeed: 5,  
   bigEnemyBulletDamage: 100,
   bigEnemyBulletSpeed: -20,

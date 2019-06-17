@@ -18,7 +18,9 @@ class PlayerShip{
     mainWindow.appendChild(this.element);
     this.speed = ship.speed;
     this.bulletSpeed = ship.playerBulletSpeed;
-    this.bulletDamage = ship.playerBulletDamage;  
+    this.bulletDamage = ship.playerBulletDamage;
+
+    this._shipHealthUp(ship.playerShipHealth);
 	}
 
   shipMove(direction){
@@ -51,5 +53,13 @@ class PlayerShip{
     shipBullet.bulletFly("enemyShip");
     return shipBullet;
   }
-}
 
+  _shipHealthUp(normalHealth){
+    setInterval(()=>{
+      if(this.element.getAttribute('health') < normalHealth){        
+        this.element.firstChild.setAttribute('value', +this.element.getAttribute('health') + 10);
+        this.element.setAttribute("health", +this.element.firstChild.getAttribute('value'));
+      }
+    }, 1000);
+  }
+}

@@ -60,6 +60,6 @@ class PlayerShip{
         this.element.firstChild.setAttribute('value', +this.element.getAttribute('health') + 10);
         this.element.setAttribute("health", +this.element.firstChild.getAttribute('value'));
       }
-    }, 1000);
+    }, 100);
   }
 }

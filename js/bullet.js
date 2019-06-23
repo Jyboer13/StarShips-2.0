@@ -1,4 +1,4 @@
-let Score = document.getElementById('info').children[1];
+let Score = document.getElementById('info').children[0].children[1];
 
 class Bullet{
   constructor(ship) {
@@ -71,7 +71,7 @@ class Bullet{
             enemies[i].firstChild.setAttribute("value", enemies[i].getAttribute("health"));
             if(enemies[i].getAttribute("health") <= 0){
               enemies[i].setAttribute("removed", true);
-              confirm('Начать заново(OK) или закрыть окно с игрой(Cancel/Отменна)?') ? window.location.reload() : window.close();
+              confirm('Вы проиграли. \n Начать заново(OK) или закрыть окно с игрой(Cancel/Отменна)?') ? window.location.reload() : window.close();
               enemies[i].remove();
               return;              
             }
